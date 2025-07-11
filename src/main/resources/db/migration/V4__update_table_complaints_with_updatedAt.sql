@@ -1,0 +1,2 @@
+ALTER TABLE complaints
+ADD COLUMN updated_at TIMESTAMP;
