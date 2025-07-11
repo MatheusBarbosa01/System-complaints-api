@@ -40,6 +40,12 @@ public class ComplaintController {
         var complaintList = complaintService.listUserComplaints(user);
         return ResponseEntity.ok(complaintList);
     }
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<ComplaintListDto>> listComplaintByFilter (@AuthenticationPrincipal User user, @Valid @RequestBody ComplaintDto data){
+        var complaintList = complaintService.listUserComplaintsFilter(user, data);
+        return ResponseEntity.ok(complaintList);
+    }
     
     @GetMapping("/{id}")
     public ResponseEntity<ComplaintDetailDto> detailComplaint(@PathVariable Long id, @AuthenticationPrincipal User user){

@@ -48,6 +48,19 @@ public class ComplaintService {
             .toList();
     }
 
+    public List<ComplaintListDto> listUserComplaintsFilter(User user, ComplaintDto data){
+        return complaintRepository.findByUserAndPriority(user, data.priority())
+            .stream()
+            .map(c-> new ComplaintListDto(
+                c.getId(),
+                c.getTitle(),
+                resumo(c.getDescription(), 30),
+                c.getStatus(),
+                c.getCreatedAt()
+            ))
+            .toList();
+    }
+
     public ComplaintDetailDto getComplaintDetail(Long id, User user) {
         Complaint complaint = complaintRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Reclamação não encontrada"));
@@ -55,7 +68,7 @@ public class ComplaintService {
         if (!complaint.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("Acesso negado");
         }
-
+        
         return new ComplaintDetailDto(
             complaint.getTitle(),
             complaint.getDescription(),
