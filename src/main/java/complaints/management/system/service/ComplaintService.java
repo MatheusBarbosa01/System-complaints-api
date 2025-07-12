@@ -49,7 +49,7 @@ public class ComplaintService {
     }
 
     public List<ComplaintListDto> listUserComplaintsFilter(User user, ComplaintDto data){
-        return complaintRepository.findByUserAndPriority(user, data.priority())
+        return complaintRepository.findByUserAndPriorityAndDeletedAtIsNull(user, data.priority())
             .stream()
             .map(c-> new ComplaintListDto(
                 c.getId(),

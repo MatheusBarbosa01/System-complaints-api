@@ -10,5 +10,5 @@ import complaints.management.system.model.User;
 
 public interface ComplaintRepository extends JpaRepository<Complaint,Long>{
     List<Complaint> findByUserAndDeletedAtIsNull(User user);
-    List<Complaint> findByUserAndPriority(User user, ComplaintPriority complaintPriority);
+    List<Complaint> findByUserAndPriorityAndDeletedAtIsNull(User user, ComplaintPriority complaintPriority);
 }
