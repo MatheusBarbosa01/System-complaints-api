@@ -7,6 +7,7 @@ import complaints.management.system.dto.user.UserDto;
 import complaints.management.system.dto.user.UserRegisterDto;
 import complaints.management.system.model.User;
 import complaints.management.system.repository.UserRepository;
+import complaints.management.system.util.CpfValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,9 @@ public class UserService {
 
     @Transactional
     public UserDto registerUser(UserRegisterDto data){
+        if (!CpfValidator.isValid(data.cpf())) {
+            throw new IllegalArgumentException("CPF Inválido!");
+        }
         if (userRepository.findByEmail(data.email()).isPresent()) {
             throw new IllegalArgumentException("Email já cadastrado!");
         }

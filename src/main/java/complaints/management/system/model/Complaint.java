@@ -47,8 +47,7 @@ public class Complaint {
 
     @Enumerated(EnumType.STRING)
     @Column(name= "priority", nullable = false)
-    @Default
-    private ComplaintPriority priority = ComplaintPriority.MEDIA;
+    private ComplaintPriority priority;
 
     public boolean isDeleted() {
         return deletedAt != null;
