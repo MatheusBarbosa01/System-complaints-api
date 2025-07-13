@@ -3,6 +3,8 @@ package complaints.management.system.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import complaints.management.system.dto.complaint.ComplaintCreateDto;
@@ -37,9 +39,8 @@ public class ComplaintService {
         return new ComplaintDto(complaint);
     }
 
-    public List<ComplaintListDto> listUserComplaints(User user) {
-        return complaintRepository.findByUserAndDeletedAtIsNull(user)
-            .stream()
+    public Page<ComplaintListDto> listUserComplaints(User user, Pageable pageable) {
+        return complaintRepository.findByUserAndDeletedAtIsNull(user, pageable)
             .map(c -> new ComplaintListDto(
                 c.getId(),
                 c.getTitle(),
@@ -47,13 +48,11 @@ public class ComplaintService {
                 c.getStatus(),
                 c.getPriority(),
                 c.getCreatedAt()
-            ))
-            .toList();
+            ));
     }
 
-    public List<ComplaintListDeletedDto> listUserComplaintsDeleted(User user) {
-        return complaintRepository.findByUserAndDeletedAtIsNotNull(user)
-            .stream()
+    public Page<ComplaintListDeletedDto> listUserComplaintsDeleted(User user, Pageable pageable) {
+        return complaintRepository.findByUserAndDeletedAtIsNotNull(user, pageable)
             .map(c -> new ComplaintListDeletedDto(
                 c.getId(),
                 c.getTitle(),
@@ -62,22 +61,19 @@ public class ComplaintService {
                 c.getPriority(),
                 c.getCreatedAt(),
                 c.getDeletedAt()
-            ))
-            .toList();
+            ));
     }
 
-    public List<ComplaintListDto> listUserComplaintsFilter(User user, ComplaintDto data){
-        return complaintRepository.findByUserAndPriorityAndDeletedAtIsNull(user, data.priority())
-            .stream()
-            .map(c-> new ComplaintListDto(
+    public Page<ComplaintListDto> listUserComplaintsFilter(User user, ComplaintDto data, Pageable pageable) {
+        return complaintRepository.findByUserAndPriorityAndDeletedAtIsNull(user, data.priority(), pageable)
+            .map(c -> new ComplaintListDto(
                 c.getId(),
                 c.getTitle(),
                 resumo(c.getDescription(), 30),
                 c.getStatus(),
                 c.getPriority(),
                 c.getCreatedAt()
-            ))
-            .toList();
+            ));
     }
 
     public ComplaintDetailDto getComplaintDetail(Long id, User user) {

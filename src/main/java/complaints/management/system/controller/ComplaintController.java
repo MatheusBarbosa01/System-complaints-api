@@ -2,6 +2,8 @@ package complaints.management.system.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,20 +39,20 @@ public class ComplaintController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ComplaintListDto>> listComplaint (@AuthenticationPrincipal User user){
-        var complaintList = complaintService.listUserComplaints(user);
-        return ResponseEntity.ok(complaintList);
+    public ResponseEntity<Page<ComplaintListDto>> listComplaint(@AuthenticationPrincipal User user, Pageable pageable){
+        return ResponseEntity.ok(complaintService.listUserComplaints(user, pageable));
     }
+    
     @GetMapping("/deleted")
-    public ResponseEntity<List<ComplaintListDeletedDto>> listComplaintDeleted (@AuthenticationPrincipal User user){
-        var complaintList = complaintService.listUserComplaintsDeleted(user);
-        return ResponseEntity.ok(complaintList);
+    public ResponseEntity<Page<ComplaintListDeletedDto>> listComplaintDeleted(@AuthenticationPrincipal User user, Pageable pageable){
+        return ResponseEntity.ok(complaintService.listUserComplaintsDeleted(user, pageable));
     }
 
     @PostMapping("/filter")
-    public ResponseEntity<List<ComplaintListDto>> listComplaintByFilter (@AuthenticationPrincipal User user, @Valid @RequestBody ComplaintDto data){
-        var complaintList = complaintService.listUserComplaintsFilter(user, data);
-        return ResponseEntity.ok(complaintList);
+    public ResponseEntity<Page<ComplaintListDto>> listComplaintByFilter(@AuthenticationPrincipal User user,
+                                                                         @Valid @RequestBody ComplaintDto data,
+                                                                         Pageable pageable){
+        return ResponseEntity.ok(complaintService.listUserComplaintsFilter(user, data, pageable));
     }
     
     @GetMapping("/{id}")
