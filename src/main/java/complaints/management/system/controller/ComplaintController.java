@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import complaints.management.system.dto.complaint.ComplaintCreateDto;
 import complaints.management.system.dto.complaint.ComplaintDetailDto;
 import complaints.management.system.dto.complaint.ComplaintDto;
+import complaints.management.system.dto.complaint.ComplaintListDeletedDto;
 import complaints.management.system.dto.complaint.ComplaintListDto;
 import complaints.management.system.dto.complaint.ComplaintUpdateDto;
 import complaints.management.system.model.User;
@@ -38,6 +39,11 @@ public class ComplaintController {
     @GetMapping
     public ResponseEntity<List<ComplaintListDto>> listComplaint (@AuthenticationPrincipal User user){
         var complaintList = complaintService.listUserComplaints(user);
+        return ResponseEntity.ok(complaintList);
+    }
+    @GetMapping("/deleted")
+    public ResponseEntity<List<ComplaintListDeletedDto>> listComplaintDeleted (@AuthenticationPrincipal User user){
+        var complaintList = complaintService.listUserComplaintsDeleted(user);
         return ResponseEntity.ok(complaintList);
     }
 

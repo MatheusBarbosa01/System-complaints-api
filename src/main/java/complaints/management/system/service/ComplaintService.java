@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import complaints.management.system.dto.complaint.ComplaintCreateDto;
 import complaints.management.system.dto.complaint.ComplaintDetailDto;
 import complaints.management.system.dto.complaint.ComplaintDto;
+import complaints.management.system.dto.complaint.ComplaintListDeletedDto;
 import complaints.management.system.dto.complaint.ComplaintListDto;
 import complaints.management.system.dto.complaint.ComplaintUpdateDto;
 import complaints.management.system.model.Complaint;
@@ -26,6 +27,7 @@ public class ComplaintService {
         Complaint complaint = Complaint.builder()
             .title(data.title())
             .description(data.description())
+            .priority(data.priority())
             .cpf(user.getCpf())
             .createdAt(LocalDateTime.now())
             .user(user)
@@ -43,7 +45,23 @@ public class ComplaintService {
                 c.getTitle(),
                 resumo(c.getDescription(), 30),
                 c.getStatus(),
+                c.getPriority(),
                 c.getCreatedAt()
+            ))
+            .toList();
+    }
+
+    public List<ComplaintListDeletedDto> listUserComplaintsDeleted(User user) {
+        return complaintRepository.findByUserAndDeletedAtIsNotNull(user)
+            .stream()
+            .map(c -> new ComplaintListDeletedDto(
+                c.getId(),
+                c.getTitle(),
+                resumo(c.getDescription(), 30),
+                c.getStatus(),
+                c.getPriority(),
+                c.getCreatedAt(),
+                c.getDeletedAt()
             ))
             .toList();
     }
@@ -56,6 +74,7 @@ public class ComplaintService {
                 c.getTitle(),
                 resumo(c.getDescription(), 30),
                 c.getStatus(),
+                c.getPriority(),
                 c.getCreatedAt()
             ))
             .toList();
@@ -75,6 +94,7 @@ public class ComplaintService {
             complaint.getCreatedAt(),
             complaint.getUpdatedAt(),
             complaint.getStatus(),
+            complaint.getPriority(),
             complaint.getUser().getCpf(),
             complaint.getUser().getEmail()
         );
