@@ -51,5 +51,12 @@ java -jar target/system-0.0.1-SNAPSHOT.jar
 ```bash
 ./mvnw spring-boot:run
 ```
+## 🔗 Frontend
+
+Este backend é consumido por uma aplicação frontend em React:
+
+👉 [Repositório do Frontend - system-complaint](https://github.com/MatheusBarbosa01/system-complaints.git)
+
+O frontend faz chamadas para os endpoints REST definidos neste projeto.
 
 
